@@ -6,6 +6,7 @@ class PaymentSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.PrimaryKeyRelatedField(
         read_only=True, default=serializers.CurrentUserDefault()
     )
+    loan = serializers.PrimaryKeyRelatedField(queryset=Loan.objects.all())
 
     class Meta:
         model = Payment
@@ -14,6 +15,7 @@ class PaymentSerializer(serializers.HyperlinkedModelSerializer):
             "date",
             "value",
             "user",
+            "loan"
         ]
 
 

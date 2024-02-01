@@ -13,7 +13,7 @@ class LoanViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         if self.request.user.is_superuser:
-            return Loan.objects.all()
+            return Loan.objects.all().prefetch_related("payments")
         else:
             return Loan.objects.filter(user=self.request.user)
 

@@ -21,3 +21,5 @@ class Payment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    loan = models.ForeignKey(
+        Loan, on_delete=models.CASCADE, related_name="payments")

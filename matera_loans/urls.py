@@ -17,10 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from rest_framework.authtoken.views import obtain_auth_token
 from core.views import LoanViewSet, PaymentViewSet
 
 router = routers.DefaultRouter()
 router.register(r"loans", LoanViewSet)
 router.register(r"payments", PaymentViewSet)
 
-urlpatterns = [path("admin/", admin.site.urls), path("", include(router.urls))]
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("", include(router.urls)),
+    path("login/", obtain_auth_token, name="login"),
+]

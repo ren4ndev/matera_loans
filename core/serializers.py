@@ -3,6 +3,10 @@ from .models import Loan, Payment
 
 
 class LoanSerializer(serializers.HyperlinkedModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(
+        read_only=True, default=serializers.CurrentUserDefault()
+    )
+
     class Meta:
         model = Loan
         fields = [
@@ -17,6 +21,10 @@ class LoanSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PaymentSerializer(serializers.HyperlinkedModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(
+        read_only=True, default=serializers.CurrentUserDefault()
+    )
+
     class Meta:
         model = Payment
         fields = [
@@ -24,4 +32,5 @@ class PaymentSerializer(serializers.HyperlinkedModelSerializer):
             "date",
             "value",
             "loan",
+            "user",
         ]

@@ -2,6 +2,10 @@ from rest_framework.permissions import BasePermission
 
 
 class IsRelatedToUser(BasePermission):
+    def has_permission(self, request, view):
+        # Verifica se o usuário está autenticado para todas as operações CRUD
+        return request.user.is_authenticated
+
     def has_object_permission(self, request, view, obj):
         # Verifica se o usuário é um superusuário
         if request.user.is_superuser:

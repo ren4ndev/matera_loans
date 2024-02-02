@@ -16,8 +16,9 @@ Including another URLconf
 """
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken.views import obtain_auth_token
 
-from core.views import UserCreate, LoginView, LoanViewSet, PaymentViewSet
+from core.views import UserCreate, LoanViewSet, PaymentViewSet
 
 router = DefaultRouter()
 router.register("loans", LoanViewSet, basename="loans")
@@ -25,6 +26,6 @@ router.register("payments", PaymentViewSet, basename="payments")
 
 urlpatterns = [
     path("users/", UserCreate.as_view(), name="user_create"),
-    path("login/", LoginView.as_view(), name="login"),
+    path('login/', obtain_auth_token, name='login'),
     path("", include(router.urls)),
 ]

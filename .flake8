@@ -1,0 +1,10 @@
+[flake8]
+exclude =
+    .git,
+    .github/,
+    __pycache__,
+    .venv,
+    migrations,
+    settings
+max-line-length = 120
+ignore = E402,E501

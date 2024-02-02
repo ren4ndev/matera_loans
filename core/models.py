@@ -7,11 +7,11 @@ class Loan(models.Model):
     interest_rate = models.DecimalField(max_digits=10, decimal_places=2)
     ip_address = models.CharField(max_length=100)
     request_date = models.DateField()
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     bank = models.CharField(max_length=100)
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    client = models.CharField(max_length=100)
 
 
 class Payment(models.Model):
@@ -20,6 +20,5 @@ class Payment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     loan = models.ForeignKey(
         Loan, on_delete=models.CASCADE, related_name="payments")

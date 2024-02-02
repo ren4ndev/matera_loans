@@ -1,39 +1,42 @@
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
+
 from .models import Loan, Payment
 
 
-class PaymentSerializer(serializers.HyperlinkedModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(
-        read_only=True, default=serializers.CurrentUserDefault()
-    )
-    loan = serializers.PrimaryKeyRelatedField(queryset=Loan.objects.all())
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("username", "email", "password")
+        extra_kwargs = {"password": {"write_only": True}}
+
+    def create(self, validated_data):
+        user = User(
+            email=validated_data["email"],
+            username=validated_data["username"]
+        )
+        user.set_password(validated_data["password"])
+        user.save()
+        Token.objects.create(user=user)
+        return user
+
+
+class PaymentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Payment
-        fields = [
-            "id",
-            "date",
-            "value",
-            "user",
-            "loan"
-        ]
+        fields = "__all__"
 
 
-class LoanSerializer(serializers.HyperlinkedModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(
-        read_only=True, default=serializers.CurrentUserDefault()
-    )
-    payments = PaymentSerializer(many=True, read_only=True)
+class LoanSerializer(serializers.ModelSerializer):
+    payments = PaymentSerializer(many=True, read_only=True, required=False)
 
     class Meta:
         model = Loan
-        fields = [
-            "id",
-            "nominal_value",
-            "interest_rate",
-            "ip_address",
-            "request_date",
-            "bank",
-            "user",
-            "payments",
-        ]
+        fields = "__all__"
+        read_only_fields = ('created_by',)
+
+    def create(self, validated_data):
+        validated_data['created_by'] = self.context['request'].user
+        return super(LoanSerializer, self).create(validated_data)

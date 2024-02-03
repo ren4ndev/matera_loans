@@ -41,6 +41,7 @@ class LoanAPITest(APITestCase):
         url = self.url
         response = self.client1.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
 
     def test_authenticaded_user_cannot_get_other_users_loan_list(self):
         url = self.url

@@ -31,6 +31,7 @@ class PaymentSerializer(serializers.ModelSerializer):
 
 class LoanSerializer(serializers.ModelSerializer):
     payments = PaymentSerializer(many=True, read_only=True, required=False)
+    outstanding_balance = serializers.SerializerMethodField()
 
     class Meta:
         model = Loan
@@ -40,3 +41,7 @@ class LoanSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['created_by'] = self.context['request'].user
         return super(LoanSerializer, self).create(validated_data)
+
+    def get_outstanding_balance(self, obj):
+        outstanding_balance = obj.calculate_outstanding_balance()
+        return outstanding_balance

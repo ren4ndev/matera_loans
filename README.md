@@ -59,10 +59,12 @@ Na raiz do projeto, execute as seguintes ações
 - Crie um superuser se necessário:
   `python3 manage.py createsuperuser`
 
-- Rode o servidor Django:
+- Para rodar o projeto:
   `python3 manage.py runserver`
 
 ### Para testar
+
+Verifique primeiro que o container docker est'a rodando e que as migraçôes foram feitas.
 
 - Para rodar os testes automatizados que foram implementados:
 `python3 -m pytest`

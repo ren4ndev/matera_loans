@@ -1,4 +1,5 @@
 from rest_framework.permissions import BasePermission
+from .models import Loan, Payment
 
 
 class IsRelatedToUser(BasePermission):
@@ -9,10 +10,10 @@ class IsRelatedToUser(BasePermission):
         if request.user.is_superuser:
             return True
 
-        if obj.created_by == request.user:
+        if isinstance(obj, Loan) and obj.created_by == request.user:
             return True
 
-        if obj.loan.created_by == request.user:
+        if isinstance(obj, Payment) and obj.loan.created_by == request.user:
             return True
 
         return False

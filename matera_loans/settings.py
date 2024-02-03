@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "core",
     "rest_framework",
     "rest_framework.authtoken",
+    "rest_framework_swagger",
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +60,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-    )
+    ),
 }
 
 ROOT_URLCONF = "matera_loans.urls"

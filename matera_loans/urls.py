@@ -18,14 +18,27 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token
 
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
 from core.views import UserCreate, LoanViewSet, PaymentViewSet
 
 router = DefaultRouter()
 router.register("loans", LoanViewSet, basename="loans")
 router.register("payments", PaymentViewSet, basename="payments")
 
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Matera Loans API",
+        default_version='v1',
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,))
+
 urlpatterns = [
     path("users/", UserCreate.as_view(), name="user_create"),
     path('login/', obtain_auth_token, name='login'),
     path("", include(router.urls)),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
